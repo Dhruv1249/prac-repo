@@ -1,9 +1,7 @@
 name: testing out for the first time
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: pythonnn-app
