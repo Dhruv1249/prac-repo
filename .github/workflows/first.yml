@@ -1,0 +1,32 @@
+name: testing out for the first time
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: python-app
+
+permissions:
+  packages: read
+
+jobs:
+  push_it:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull it first
+        uses: actions/Checkout@v4
+
+      - name: Build python
+        run: docker build ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:${{ github.sha }} ./python-app
+
+      - name: Login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u {{ github.repository_owner }} --password-stdin
+
+      - name: Push image
+        run: |
+          docker push \
+            ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:${{ github.sha }}
+

@@ -1,0 +1,17 @@
+services:
+  app:
+    build: ./node-app
+    depends_on:
+      python:
+        condition: service_completed_successfully
+
+    ports:
+      - "5002:5001"
+  python:
+    build: ./python-app
+    cpus: 0.5
+    mem_limit: 256m
+    environment:
+      - env=dev
+
+
