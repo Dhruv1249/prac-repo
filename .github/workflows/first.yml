@@ -18,16 +18,16 @@ jobs:
 
     steps:
       - name: Pull it first
-        uses: actions/Checkout@v4
+        uses: actions/checkout@v4
 
       - name: Build python
-        run: docker build -t ghcr.io/${MY_NAME}/${IMAGE_NAME}:${{ github.sha }} ./python-app
+        run: docker build -t ghcr.io/$MY_NAME/$IMAGE_NAME:${{ github.sha }} ./python-app
 
       - name: Login
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${MY_NAME}" --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $MY_NAME --password-stdin
 
       - name: Push image
         run: |
           docker push \
-            ghcr.io/${MY_NAME}/${IMAGE_NAME}:${{ github.sha }}
+            ghcr.io/$MY_NAME/$IMAGE_NAME:${{ github.sha }}
 
