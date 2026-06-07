@@ -1,32 +1,41 @@
-pipeline{
-    agent{
-        docker {
-            image "docker:latest"
-            args "-v /var/run/docker.sock:/var/run/docker.sock"
+pipeline {
+    // Uses your native Arch host machine environment directly
+    agent any 
+    
+    stages {
+        stage("Parallel Microservices Build") {
+            parallel {
+                
+                stage("Build python") {
+                    steps {
+                        // Shifts execution context inside the python folder safely
+                        dir('python-app') {
+                            sh "docker build -t test-python:latest ."
+                        }
+                    }
+                }
+                
+                stage("Build node") {
+                    steps {
+                        // Shifts execution context inside the node folder safely
+                        dir('node-app') {
+                            sh "docker build -t test-node:latest ."
+                        }
+                    }
+                }
+                
+            }
         }
     }
-    stages{
-        parallel {
-            stage("Build python"){
-                steps {
-                    sh "docker build -t test-python python-app/."
-                }
-            }
-            stage("Build node"){
-                steps {
-                    sh "docker build -t test-node node-app/."
-                }
-            }
-        }
-    }
-    post{
-        always{
+    
+    post {
+        always {
             echo "========always========"
         }
-        success{
+        success {
             echo "========pipeline executed successfully ========"
         }
-        failure{
+        failure {
             echo "========pipeline execution failed========"
         }
     }
