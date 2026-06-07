@@ -20,7 +20,7 @@ jobs:
         uses: actions/Checkout@v4
 
       - name: Build python
-        run: docker build ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:${{ github.sha }} ./python-app
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:${{ github.sha }} ./python-app
 
       - name: Login
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u {{ github.repository_owner }} --password-stdin
