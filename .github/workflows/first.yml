@@ -7,10 +7,10 @@ on:
 
 env:
   IMAGE_NAME: python-app
-  my-name: dhruv1249
+  MY_NAME: dhruv1249
 
 permissions:
-  packages: read
+  packages: write
 
 jobs:
   push_it:
@@ -21,13 +21,13 @@ jobs:
         uses: actions/Checkout@v4
 
       - name: Build python
-        run: docker build -t ghcr.io/${my-name}/${IMAGE_NAME}:${{ github.sha }} ./python-app
+        run: docker build -t ghcr.io/${MY_NAME}/${IMAGE_NAME}:${{ github.sha }} ./python-app
 
       - name: Login
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u {{ github.repository_owner }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "{MY_NAME}" --password-stdin
 
       - name: Push image
         run: |
           docker push \
-            ghcr.io/${my-name}/${IMAGE_NAME}:${{ github.sha }}
+            ghcr.io/${MY_NAME}/${IMAGE_NAME}:${{ github.sha }}
 
