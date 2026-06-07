@@ -11,6 +11,7 @@ env:
 
 permissions:
   packages: write
+  contents: read
 
 jobs:
   push_it:
